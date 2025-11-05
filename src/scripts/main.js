@@ -1,29 +1,20 @@
 'use strict';
 
 document.addEventListener('click', (e) => {
-  const spider = document.querySelector('.spider');
+  // const spider = document.querySelector('.spider');
   const wall = e.target.closest('.wall');
 
   if (!wall) {
     return;
   }
 
-  const wallCoords = wall.getBoundingClientRect();
-  // Розрахунок нових координат відносно "стіни"//
-  let newTop = Math.max(
-    e.clientY - wallCoords.top - spider.clientHeight / 2,
-    0,
-  );
+  const spider = wall.querySelector('.spider');
+  const wallRect = wall.getBoundingClientRect();
+  let newTop = Math.max(e.clientY - wallRect.top - spider.offsetHeight / 2, 0);
+  let newLeft = Math.max(e.clientX - wallRect.left - spider.offsetWidth / 2, 0);
 
-  let newLeft = Math.max(
-    e.clientX - wallCoords.left - spider.clientWidth / 2,
-    0,
-  );
-
-  // Обмеження руху павука в межах стіни//
-  newTop = Math.min(newTop, wall.clientHeight - spider.clientHeight);
-  newLeft = Math.min(newLeft, wall.clientWidth - spider.clientWidth);
-  // Переміщення павука//
-  spider.style.top = newTop + 'px';
-  spider.style.left = newLeft + 'px';
+  newTop = Math.min(newTop, wall.offsetHeight - spider.offsetHeight);
+  newLeft = Math.min(newLeft, wall.offsetWidth - spider.offsetWidth);
+  spider.style.top = `${newTop}px`;
+  spider.style.left = `${newLeft}px`;
 });
